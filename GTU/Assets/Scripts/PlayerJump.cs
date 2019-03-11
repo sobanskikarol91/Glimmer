@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ball : MonoBehaviour
+[RequireComponent(typeof(AudioSource))]
+public class PlayerJump : MonoBehaviour
 {
     [SerializeField] float force;
+    [SerializeField] float minJumpDistance = 2f;
+    [SerializeField] float maxJumpDisntance = 4.5f;
 
     private Vector3 dragEnd, dragStart;
     private Rigidbody2D rb;
     private bool isGlued;
-
+    private AudioSource audioSource;
 
     void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody2D>();
         InputHandler.OnTapEnd += TapEnd;
         InputHandler.OnTapStart += TapStart;
@@ -32,8 +36,10 @@ public class Ball : MonoBehaviour
 
     void AddForce()
     {
-        Vector3 direction = dragEnd - dragStart;
-        rb.AddForce(-direction * force, ForceMode2D.Impulse);
+        Vector2 direction = (dragEnd - dragStart)* force;
+        direction = direction.ClampMagnitudeMinMax(minJumpDistance, maxJumpDisntance);
+        audioSource.Play();
+        rb.AddForce(-direction, ForceMode2D.Impulse);
     }
 
     void GlueObject()
@@ -50,12 +56,13 @@ public class Ball : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(!isGlued)
+        if (!isGlued)
         {
             isGlued = true;
             GlueObject();
         }
     }
+
 
     Vector3 GetMousePosition()
     {
