@@ -49,6 +49,11 @@ public class PlayerJump : MonoBehaviour
         rb.velocity = Vector3.zero;
     }
 
+  public  void UnStick()
+    {
+        rb.bodyType = RigidbodyType2D.Dynamic;
+    }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         isGlued = false;
@@ -62,7 +67,6 @@ public class PlayerJump : MonoBehaviour
             GlueObject();
         }
     }
-
 
     Vector3 GetMousePosition()
     {
