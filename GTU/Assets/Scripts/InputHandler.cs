@@ -8,6 +8,7 @@ public class InputHandler : MonoBehaviour
 {
     public delegate void State();
     public static State OnTapStart, OnTapEnd;
+    public static State OnCollision;
 
 
     private void Update()
@@ -26,5 +27,10 @@ public class InputHandler : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
             OnTapEnd();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        OnCollision();
     }
 }

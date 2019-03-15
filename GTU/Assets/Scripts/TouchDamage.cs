@@ -21,7 +21,6 @@ public class TouchDamage : Health
         currentHelath -= decreaseHealthSpeed * Time.deltaTime;
 
         player = collision.GetComponent<PlayerJump>();
-        Debug.Log(currentHelath);
 
         if (IsDeath())
             DestroyEffect();
